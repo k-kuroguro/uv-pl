@@ -1,0 +1,82 @@
+[project]
+name = "uv-pl-template"
+version = "0.1.0"
+description = ""
+license = "MIT"
+readme = "README.md"
+requires-python = "~=3.12"
+dependencies = [
+]
+
+[project.optional-dependencies]
+cpu = [
+   "torch==2.5.1+cpu",
+   "torchvision==0.20.1+cpu",
+   "lightning==2.5.0.post0",
+]
+cu121 = [
+   "torch==2.5.1+cu121",
+   "torchvision==0.20.1+cu121",
+   "lightning==2.5.0.post0",
+]
+cu124 = [
+   "torch==2.5.1+cu124",
+   "torchvision==0.20.1+cu124",
+   "lightning==2.5.0.post0",
+]
+
+
+[tool.uv]
+package = false
+conflicts = [
+   [
+      { extra = "cpu" },
+      { extra = "cu121" },
+      { extra = "cu124" },
+   ],
+]
+
+[tool.uv.sources]
+torch = [
+   { index = "torch-cpu", extra = "cpu" },
+   { index = "torch-cu121", extra = "cu121" },
+   { index = "torch-cu124", extra = "cu124" },
+]
+torchvision = [
+   { index = "torch-cpu", extra = "cpu" },
+   { index = "torch-cu121", extra = "cu121" },
+   { index = "torch-cu124", extra = "cu124" },
+]
+
+[[tool.uv.index]]
+name = "torch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "torch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[[tool.uv.index]]
+name = "torch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+unfixable = []
+ignore = ["B905", "D417", "E501", "PLR0913"]
+
+[tool.ruff.format]
+quote-style = "double"
+line-ending = "auto"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+ignore_missing_imports = true
