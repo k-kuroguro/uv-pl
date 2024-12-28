@@ -1,0 +1,6 @@
+# @package _global_
+
+defaults:
+  - override /data: mnist2
+
+task_name: example_override

@@ -2,5 +2,10 @@ __pycache__/
 .mypy_cache/
 .venv/
 
-lightning_logs/
-MNIST/
+logs/*
+!logs/.gitkeep
+
+data/*
+!data/.gitkeep
+
+.env
