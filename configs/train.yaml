@@ -6,6 +6,7 @@ defaults:
   - experiment: null
   - paths: default
   - hydra: default
-  - logger: wandb
+  - logger: [wandb, csv]
+  - callbacks: default
 
 task_name: train_on_mnist
