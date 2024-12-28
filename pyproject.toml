@@ -15,6 +15,14 @@ dependencies = [
    "wandb>=0.19.1",
 ]
 
+[dependency-groups]
+dev = [
+   "taskipy>=1.14.1",
+]
+
+[tool.taskipy.tasks]
+clean-logs = "rm -rf logs/**"
+
 [tool.ruff]
 line-length = 100
 
