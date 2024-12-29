@@ -1,47 +1,52 @@
-import logging
-
 import hydra
 import lightning as L
 from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
 
-from utils import get_config_path, register_custom_resolvers
+from utils import (
+    RankedLogger,
+    get_config_path,
+    instantiate_callbacks,
+    instantiate_loggers,
+    register_custom_resolvers,
+)
 
-log = logging.getLogger(__name__)
+log = RankedLogger(__name__, rank_zero_only=True)
 
 register_custom_resolvers()
 
 
 def train(cfg: DictConfig) -> None:
-    log.info(f"Instantiating {cfg.model._target_} as model")
-    model = instantiate(cfg.model)
-    datamodule = instantiate(cfg.data)
-    if cfg.get("logger", None):
-        loggers = [instantiate(c) for c in cfg.logger.values()]
-        for logger in loggers:
-            logger.log_hyperparams(OmegaConf.to_container(cfg, resolve=True))
-        logger = loggers
-        print(loggers)
-    else:
-        logger = False
-    callbacks = [instantiate(c) for c in cfg.callbacks.values()]
-    trainer = instantiate(cfg.trainer, callbacks=callbacks, logger=logger)
-    trainer.fit(model, datamodule)
-    # trainer.test()
-    if logger:
-        for logger in loggers:
-            if isinstance(logger, L.pytorch.loggers.WandbLogger):
-                import wandb
+    resolved_cfg = OmegaConf.to_container(cfg, resolve=True)
 
-                if wandb.run:
-                    wandb.finish()
+    log.info(f"Instantiating model: {cfg.model._target_}")
+    model: L.LightningModule = instantiate(cfg.model)
+
+    log.info(f"Instantiating datamodule: {cfg.data._target_}")
+    datamodule: L.LightningDataModule = instantiate(cfg.data)
+
+    log.info("Instantiating loggers ...")
+    loggers = instantiate_loggers(cfg)
+    for logger in loggers:
+        logger.log_hyperparams(resolved_cfg)  # type: ignore
+
+    log.info("Instantiating callbacks ...")
+    callbacks = instantiate_callbacks(cfg)
+
+    log.info(f"Instantiating trainer: {cfg.trainer._target_}")
+    trainer = instantiate(cfg.trainer, callbacks=callbacks, logger=loggers)
+
+    trainer.fit(model, datamodule)
+
+    if loggers and "wandb" in cfg.logger.keys():
+        import wandb
+
+        if wandb.run:
+            wandb.finish()
 
 
 @hydra.main(version_base="1.3", config_path=str(get_config_path()), config_name="train.yaml")
 def main(cfg: DictConfig) -> None:
-    log.info("Start training")
-    OmegaConf.resolve(cfg)
-    print(OmegaConf.to_yaml(cfg))
     train(cfg)
 
 

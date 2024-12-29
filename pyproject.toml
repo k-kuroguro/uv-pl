@@ -17,6 +17,8 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+   "mypy>=1.14.0",
+   "ruff>=0.8.4",
    "taskipy>=1.14.1",
 ]
 
