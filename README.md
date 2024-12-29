@@ -1,5 +1,11 @@
 # uv-pl
 
+## TODO
+
+ - sweep
+ - wandbの階層構造との対応
+ - cookiecutterにする
+
 ## References
 
 This template is based on the following projects:
