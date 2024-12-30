@@ -9,7 +9,7 @@ defaults:
   - hydra: default
   - experiment: null
 
-task_name: train_on_mnist
+task_name: train
 
 train: True
 test: True

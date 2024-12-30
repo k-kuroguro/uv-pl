@@ -3,7 +3,6 @@
 ## TODO
 
  - sweep
- - wandbの階層構造との対応
  - cookiecutterにする
 
 ## References
