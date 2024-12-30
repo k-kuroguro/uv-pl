@@ -8,19 +8,26 @@ requires-python = "~=3.12"
 dependencies = [
    "hydra-colorlog>=1.2.0",
    "hydra-core>=1.3.2",
+   "hydra-optuna-sweeper>=1.2.0",
    "lightning==2.5.0.post0",
    "rich>=13.9.4",
    "rootutils>=1.0.7",
+   "sqlalchemy==1.4.44", # Fixed version to avoid issue. (cf. https://github.com/optuna/optuna/issues/4392)
    "torchvision>=0.20.1",
    "wandb>=0.19.1",
 ]
 
 [dependency-groups]
-dev = [
+tools = [
    "mypy>=1.14.0",
+   "optuna-dashboard>=0.14.0",
+   "bottle==0.12.25", # Fixed version to avoid issue. (cf. https://github.com/optuna/optuna-dashboard/issues/956)
    "ruff>=0.8.4",
    "taskipy>=1.14.1",
 ]
+
+[tool.uv]
+default-groups = ["tools"]
 
 [tool.taskipy.tasks]
 clean-logs = "rm -rf logs/**"

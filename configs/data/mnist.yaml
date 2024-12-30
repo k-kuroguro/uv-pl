@@ -1,6 +1,7 @@
 _target_: data.mnist.MNISTDataModule
 data_dir: ${paths.data_dir}
-batch_size: 128
+batch_size: 256
 train_val_test_ratio: [0.8, 0.05, 0.15]
-num_workers: 0
+num_workers: 5
 pin_memory: False
+persistent_workers: True

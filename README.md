@@ -2,8 +2,11 @@
 
 ## TODO
 
- - sweep
  - cookiecutterにする
+ - ignore warnings
+ - debug
+ - pytest
+ - help
 
 ## References
 

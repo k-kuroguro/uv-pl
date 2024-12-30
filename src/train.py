@@ -17,7 +17,7 @@ register_custom_resolvers()
 
 
 @hydra.main(version_base="1.3", config_path=str(get_config_path()), config_name="train.yaml")
-def main(cfg: DictConfig) -> None:
+def main(cfg: DictConfig) -> float | None:
     if cfg.get("seed"):
         log.info(f"Setting seed: {cfg.seed}")
         L.seed_everything(cfg.seed, workers=True)
@@ -68,6 +68,17 @@ def main(cfg: DictConfig) -> None:
 
         if wandb.run:
             wandb.finish()
+
+    overall_metrics = {**train_metrics, **test_metrics}
+    target_metric = cfg.get("target_metric")
+    if not target_metric:
+        log.info("No target metric provided.")
+        return
+    if target_metric not in train_metrics:
+        log.warning(f"Target metric {target_metric} not found in metrics.")
+        return
+    log.info(f"Returning {target_metric} for optimization.")
+    return overall_metrics[target_metric]
 
 
 if __name__ == "__main__":

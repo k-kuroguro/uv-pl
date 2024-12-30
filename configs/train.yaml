@@ -7,6 +7,7 @@ defaults:
   - trainer: default
   - paths: default
   - hydra: default
+  - sweeper: null
   - experiment: null
 
 task_name: train
