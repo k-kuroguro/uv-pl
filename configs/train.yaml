@@ -9,6 +9,7 @@ defaults:
   - hydra: default
   - sweeper: null
   - experiment: null
+  - debug: null
 
 task_name: train
 
@@ -18,3 +19,5 @@ test: True
 ckpt_path: null
 
 seed: null
+
+ignore_warnings: False

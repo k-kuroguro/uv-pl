@@ -1,3 +1,5 @@
+import warnings
+
 import hydra
 import lightning as L
 from hydra.utils import instantiate
@@ -18,6 +20,10 @@ register_custom_resolvers()
 
 @hydra.main(version_base="1.3", config_path=str(get_config_path()), config_name="train.yaml")
 def main(cfg: DictConfig) -> float | None:
+    if cfg.get("ignore_warnings"):
+        log.info("Ignoring warnings ...")
+        warnings.filterwarnings("ignore")
+
     if cfg.get("seed"):
         log.info(f"Setting seed: {cfg.seed}")
         L.seed_everything(cfg.seed, workers=True)
