@@ -15,13 +15,13 @@ To use this template, you can either click the [<kbd>Use this template</kbd>](ht
 $ uvx copier copy gh:k-kuroguro/uv-pl my_project
 ```
 
-## TODO
-
- - pytest
- - help
-
 ## References
 
 This template is based on the following projects:
 
 - [Lightning-Hydra-Template](https://github.com/ashleve/lightning-hydra-template) : A template for ML experimentation using PyTorch Lightning and Hydra.
+
+## TODO
+
+ - pytest
+ - help

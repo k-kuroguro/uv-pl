@@ -2,11 +2,13 @@ import warnings
 
 import hydra
 import lightning as L
+import rootutils
 from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
 
 from utils import (
     RankedLogger,
+    find_project_root,
     get_config_path,
     instantiate_callbacks,
     instantiate_loggers,
@@ -16,6 +18,10 @@ from utils import (
 log = RankedLogger(__name__, rank_zero_only=True)
 
 register_custom_resolvers()
+
+rootutils.set_root(
+    path=find_project_root(), project_root_env_var=True, dotenv=True, pythonpath=True
+)
 
 
 @hydra.main(version_base="1.3", config_path=str(get_config_path()), config_name="train.yaml")
