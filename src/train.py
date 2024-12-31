@@ -73,10 +73,10 @@ def main(cfg: DictConfig) -> float | None:
     target_metric = cfg.get("target_metric")
     if not target_metric:
         log.info("No target metric provided.")
-        return
+        return None
     if target_metric not in train_metrics:
         log.warning(f"Target metric {target_metric} not found in metrics.")
-        return
+        return None
     log.info(f"Returning {target_metric} for optimization.")
     return overall_metrics[target_metric]
 
